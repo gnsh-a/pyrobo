@@ -15,19 +15,13 @@ PyRobo is a small Python library for simulating a 3-DOF revolute-revolute-revolu
 ### Installation
 
 Requirements (typical setup):
-- Python ≥ 3.8
-- NumPy, Matplotlib (see `requirements.txt` for exact versions)
+- Python ≥ 3.10
+- NumPy, Matplotlib
 
 Install in editable/development mode from the repo root:
 
 ```bash
-pip install -e .
-```
-
-or just:
-
-```bash
-pip install -r requirements.txt
+uv sync --extra dev
 ```
 
 ---
@@ -38,16 +32,16 @@ From the repository root:
 
 ```bash
 # Example 1: Forward kinematics + animation
-python -m examples.example_1_forward_kinematics
+uv run python examples/example_1_forward_kinematics.py
 
 # Example 2: Trajectory generation
-python -m examples.example_2_trajectory
+uv run python examples/example_2_trajectory.py
 
 # Example 3: Dynamics + energy verification
-python -m examples.example_3_dynamics
+uv run python examples/example_3_dynamics.py
 
 # Example 4: Trajectory tracking control
-python -m examples.example_4_control
+uv run python examples/example_4_control.py
 ```
 
 ---
@@ -57,16 +51,16 @@ python -m examples.example_4_control
 Run basic unit tests from the repo root:
 
 ```bash
-python -m tests.test_kinematics
-python -m tests.test_dynamics
-python -m tests.test_trajectory
+uv run python tests/test_kinematics.py
+uv run python tests/test_dynamics.py
+uv run python tests/test_trajectory.py
 ```
 
 ---
 
 ### Notes
 
-- Default robot parameters (masses, lengths, inertia, gravity) are defined in the model code under `src/models/`.
+- Default robot parameters (masses, lengths, inertia, gravity) are defined in the model code under `src/pyrobo/models/`.
 - Advanced symbolic derivation and code-generation scripts live in `scripts/`, but are not needed for normal use.
 
 This project is intended for robotics education and experimentation.

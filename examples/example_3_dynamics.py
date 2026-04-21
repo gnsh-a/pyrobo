@@ -9,11 +9,11 @@ Run with: python -m examples.example_3_dynamics
 
 import numpy as np
 import matplotlib.pyplot as plt
-from src.models import initialize_three_dof_rrr
-from src.kinematics import forward_kinematics, forward_kinematics_com
-from src.simulation import rk4_step, zdot_3dof
-from src.dynamics import compute_D
-from src.visualization import RobotRenderer, plot_energy
+from pyrobo.models import initialize_three_dof_rrr
+from pyrobo.kinematics import forward_kinematics, forward_kinematics_com
+from pyrobo.simulation import rk4_step, zdot_3dof
+from pyrobo.dynamics import compute_D
+from pyrobo.visualization import RobotRenderer, plot_energy
 
 
 def compute_energy(q, qd, model_params):

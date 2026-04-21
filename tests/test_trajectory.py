@@ -5,7 +5,7 @@ Run with: python -m tests.test_trajectory
 """
 
 import numpy as np
-from src.trajectory import cubic_spline_coeffs, evaluate_spline, multi_segment_trajectory
+from pyrobo.trajectory import cubic_spline_coeffs, evaluate_spline, multi_segment_trajectory
 
 
 def test_cubic_spline_boundary_conditions():

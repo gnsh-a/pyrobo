@@ -84,7 +84,7 @@ def main():
     # Determine output directory
     script_dir = Path(__file__).parent
     project_root = script_dir.parent
-    output_dir = project_root / "src" / "dynamics"
+    output_dir = project_root / "src" / "pyrobo" / "dynamics"
     
     # Create backup directory
     backup_dir = output_dir / "backup"
@@ -122,10 +122,10 @@ def main():
     print()
     print("Generated files:")
     for filename, _ in files_to_generate:
-        print(f"  ✓ src/dynamics/{filename}")
+        print(f"  ✓ src/pyrobo/dynamics/{filename}")
     print()
     print("Backups saved to:")
-    print(f"  src/dynamics/backup/")
+    print(f"  src/pyrobo/dynamics/backup/")
     print()
     print("Next steps:")
     print("  1. Run tests to verify correctness:")

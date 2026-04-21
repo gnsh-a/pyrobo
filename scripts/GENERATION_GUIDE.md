@@ -2,7 +2,7 @@
 
 ## What
 
-The dynamics Python code in `src/dynamics/` is **auto-generated** from symbolic math using SymPy.  
+The dynamics Python code in `src/pyrobo/dynamics/` is **auto-generated** from symbolic math using SymPy.  
 You do **not** need to hand-edit these files.
 
 ## How
@@ -10,11 +10,10 @@ You do **not** need to hand-edit these files.
 1. **Edit robot model or derivation** in `scripts/symbolic_derivation.py`
 2. **Generate new code**:
    ```bash
-   pip install sympy>=1.12      # If not installed
-   python scripts/generate_dynamics.py
+   uv run python scripts/generate_dynamics.py
    ```
    - Makes backups of old code
-   - Overwrites with new, optimized `compute_D`, `compute_B`, `compute_C`, `compute_G` in `src/dynamics/`
+   - Overwrites with new, optimized `compute_D`, `compute_B`, `compute_C`, `compute_G` in `src/pyrobo/dynamics/`
 
 3. **Run or test** as usual; the generated code is immediately usable and fast.
 

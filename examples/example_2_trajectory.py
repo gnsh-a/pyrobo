@@ -8,8 +8,8 @@ Run with: python -m examples.example_2_trajectory
 
 import numpy as np
 import matplotlib.pyplot as plt
-from src.trajectory import cubic_spline_coeffs, multi_segment_trajectory, evaluate_trajectory
-from src.visualization.plotting_utils import plot_spline_trajectory
+from pyrobo.trajectory import cubic_spline_coeffs, multi_segment_trajectory, evaluate_trajectory
+from pyrobo.visualization.plotting_utils import plot_spline_trajectory
 
 
 def part_2b():
