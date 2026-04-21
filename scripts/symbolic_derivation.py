@@ -1,8 +1,10 @@
 """
 Symbolic derivation of robot dynamics using SymPy.
 
-This module derives the dynamics equations for the 3-DOF RRR manipulator
-from first principles using Lagrangian mechanics
+Hardcoded to the 3-DOF RRR arm used throughout pyrobo — not a general
+framework. DH transforms, the shared per-link inertia, and the DOF
+count of 3 are all baked in. Adapting to a different robot means
+rewriting this file.
 """
 
 import sympy as sp

@@ -1,36 +1,33 @@
-# Dynamics Code Generation Guide (Essential Info)
+# Dynamics Code Generation Guide
 
 ## What
 
-The dynamics Python code in `src/pyrobo/dynamics/` is **auto-generated** from symbolic math using SymPy.  
-You do **not** need to hand-edit these files.
+`src/pyrobo/dynamics/_generated.py` is auto-generated from symbolic math.
+Do not hand-edit it.
 
 ## How
 
-1. **Edit robot model or derivation** in `scripts/symbolic_derivation.py`
-2. **Generate new code**:
+1. Edit the robot model / derivation in `scripts/symbolic_derivation.py`.
+2. Regenerate:
    ```bash
    uv run python scripts/generate_dynamics.py
    ```
-   - Makes backups of old code
-   - Overwrites with new, optimized `compute_D`, `compute_B`, `compute_C`, `compute_G` in `src/pyrobo/dynamics/`
+   This overwrites `src/pyrobo/dynamics/_generated.py` with fresh
+   `compute_D`, `compute_B`, `compute_C`, `compute_G` definitions.
+3. Verify via the normal test suite:
+   ```bash
+   uv run python tests/test_dynamics.py
+   ```
+4. Review the diff with `git diff src/pyrobo/dynamics/_generated.py` — git
+   handles versioning, so no backup copies are kept.
 
-3. **Run or test** as usual; the generated code is immediately usable and fast.
+## Pipeline
 
-## Key Points
+1. `symbolic_derivation.py` derives D, B, C, G symbolically via Lagrangian
+   mechanics (SymPy). This is the pedagogical core — kept separate.
+2. `generate_dynamics.py` applies `sympy.cse` for common subexpression
+   elimination, uses `sympy.printing.numpy.NumPyPrinter` to emit NumPy
+   code, and writes the single `_generated.py` module.
 
-- **Generated Functions**: 
-    - `mass_matrix.py`:     `compute_D(q, L, m, g, I)`
-    - `coriolis_matrix.py`: `compute_B(q, L, m, g, I)`
-    - `centrifugal_matrix.py`: `compute_C(q, L, m, g, I)`
-    - `gravity_vector.py`:  `compute_G(q, L, m, g, I)`
-- **Generation takes ~1 min** (symbolic simplification is slow, code runs fast after).
-- **Optimization**: Common subexpressions are factored out for speed.
-- **NumPy-native**: uses `np.sin`/`np.cos` for vector compatibility.
-
-## Troubleshooting
-
-- _"NameError: name 'math' is not defined"_: Regenerate; should use `np` functions.
-- _Results mismatch_: Check DH parameters and inertia definitions in `symbolic_derivation.py`.
-
-_Last updated: December 10, 2025_
+Generation takes ~1 minute (symbolic simplification is slow; the generated
+code itself is fast).

@@ -25,9 +25,6 @@ uv run python examples/example_4_control.py
 
 # Regenerate dynamics code from symbolic derivation (~30-90s)
 uv run python scripts/generate_dynamics.py
-
-# Verify regenerated dynamics
-uv run python scripts/verify_generated_dynamics.py
 ```
 
 ## Architecture
@@ -49,7 +46,7 @@ models → kinematics → dynamics → control → simulation → visualization
 ```
 
 - **`src/pyrobo/kinematics/`** — Forward kinematics and Jacobians using DH convention. Returns 4x4 homogeneous transforms (`T10`, `T20`, `T30`). Also computes COM transforms.
-- **`src/pyrobo/dynamics/`** — **Auto-generated code.** `compute_D`, `compute_B`, `compute_C`, `compute_G` take signature `(q, L, m, g, I)`. Do not hand-edit these files; regenerate via `uv run python scripts/generate_dynamics.py`.
+- **`src/pyrobo/dynamics/`** — **Auto-generated code.** All four functions (`compute_D`, `compute_B`, `compute_C`, `compute_G`, signature `(q, L, m, g, I)`) live in a single file, `_generated.py`, re-exported via `__init__.py`. Do not hand-edit; regenerate via `uv run python scripts/generate_dynamics.py`.
 - **`src/pyrobo/control/`** — PD control and computed-torque (inverse dynamics) control. Supports gravity compensation and optional full nonlinear decoupling.
 - **`src/pyrobo/simulation/`** — RK4 integrator. `dynamics_openloop.py` for uncontrolled, `dynamics_closedloop.py` for controlled simulation. Both produce `zdot` vectors.
 - **`src/pyrobo/trajectory/`** — Cubic spline trajectory generation with via-points.
@@ -58,11 +55,10 @@ models → kinematics → dynamics → control → simulation → visualization
 
 ### Dynamics code generation pipeline
 
-The files in `src/pyrobo/dynamics/` are generated, not handwritten. The pipeline:
-1. `scripts/symbolic_derivation.py` — Derives D, B, C, G matrices symbolically via Lagrangian mechanics (SymPy)
-2. `scripts/code_generator.py` — Converts symbolic expressions to optimized NumPy code (with CSE)
-3. `scripts/generate_dynamics.py` — Orchestrates derivation + code gen, writes to `src/pyrobo/dynamics/`, creates backups in `src/pyrobo/dynamics/backup/` as `*.py.backup`
-4. `scripts/verify_generated_dynamics.py` — Numerically compares the newly generated functions against the backup copies to confirm equivalence after a regeneration
+The code in `src/pyrobo/dynamics/_generated.py` is generated, not handwritten. The pipeline:
+1. `scripts/symbolic_derivation.py` — Derives D, B, C, G matrices symbolically via Lagrangian mechanics (SymPy). Kept separate as the pedagogical core.
+2. `scripts/generate_dynamics.py` — Calls the derivation, applies `sympy.cse` for common subexpression elimination, uses `sympy.printing.numpy.NumPyPrinter` to emit NumPy code, and writes the single `_generated.py`. Git `diff`/`log` handle versioning; no backup tree is kept.
+3. Correctness after regeneration is verified by `uv run python tests/test_dynamics.py`.
 
 To change dynamics equations, edit `scripts/symbolic_derivation.py` then regenerate. Requires `sympy>=1.12`. Run via `uv run python scripts/generate_dynamics.py`. See `scripts/GENERATION_GUIDE.md` for a short operator-oriented summary.
 
