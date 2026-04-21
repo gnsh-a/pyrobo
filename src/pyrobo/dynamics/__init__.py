@@ -1,9 +1,13 @@
 """Dynamics module for manipulator dynamics matrices."""
 
-from .mass_matrix import compute_D
-from .coriolis_matrix import compute_B
-from .centrifugal_matrix import compute_C
-from .gravity_vector import compute_G
+try:
+    from ._generated import compute_B, compute_C, compute_D, compute_G
+except ModuleNotFoundError as exc:
+    if exc.name != "pyrobo.dynamics._generated":
+        raise
+    raise ModuleNotFoundError(
+        "pyrobo.dynamics._generated is missing. "
+        "Regenerate it with: uv run python scripts/generate_dynamics.py"
+    ) from exc
 
 __all__ = ["compute_D", "compute_B", "compute_C", "compute_G"]
-
