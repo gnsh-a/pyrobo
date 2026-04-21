@@ -9,10 +9,10 @@ Run with: python -m examples.example_4_control
 
 import numpy as np
 import matplotlib.pyplot as plt
-from src.models import initialize_three_dof_rrr
-from src.trajectory import cubic_spline_coeffs, evaluate_spline
-from src.simulation import rk4_step, zdot_3dof_control
-from src.visualization import RobotRenderer, plot_joint_tracking, plot_joint_errors
+from pyrobo.models import initialize_three_dof_rrr
+from pyrobo.trajectory import cubic_spline_coeffs, evaluate_spline
+from pyrobo.simulation import rk4_step, zdot_3dof_control
+from pyrobo.visualization import RobotRenderer, plot_joint_tracking, plot_joint_errors
 
 
 def generate_desired_trajectory(times, positions, velocities, t_sim):

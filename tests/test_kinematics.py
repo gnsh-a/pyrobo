@@ -5,7 +5,7 @@ Run with: python -m tests.test_kinematics
 """
 
 import numpy as np
-from src.kinematics import forward_kinematics, forward_kinematics_com, compute_jacobians
+from pyrobo.kinematics import forward_kinematics, forward_kinematics_com, compute_jacobians
 
 
 def test_forward_kinematics_zero_config():

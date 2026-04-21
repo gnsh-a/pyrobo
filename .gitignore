@@ -2,6 +2,7 @@
 __pycache__/
 *.pyc
 *.pyo
+*.egg-info/
 
 # Virtual environments
 venv/
@@ -33,4 +34,4 @@ Thumbs.db
 /final_project/
 
 # Auto-generated dynamics backups
-src/dynamics/backup/
+src/pyrobo/dynamics/backup/

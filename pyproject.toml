@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyrobo"
+version = "0.1.0"
+description = "Modular Python library for 3-DOF RRR manipulator simulation"
+authors = [{ name = "Ganesh Arivoli" }]
+requires-python = ">=3.10"
+readme = "README.md"
+dependencies = [
+    "numpy>=1.24",
+    "matplotlib>=3.7",
+]
+
+[project.optional-dependencies]
+dev = [
+    "sympy>=1.12",   # required by scripts/generate_dynamics.py
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["pyrobo*"]
+
+[tool.uv]
+managed = true

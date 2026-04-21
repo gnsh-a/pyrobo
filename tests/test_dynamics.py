@@ -5,7 +5,7 @@ Run with: python -m tests.test_dynamics
 """
 
 import numpy as np
-from src.dynamics import compute_D, compute_B, compute_C, compute_G
+from pyrobo.dynamics import compute_D, compute_B, compute_C, compute_G
 
 
 def test_mass_matrix_properties():

@@ -9,45 +9,41 @@ import numpy as np
 import sys
 from pathlib import Path
 
-# Add parent directory to path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Add src/ to path so pyrobo is importable without an editable install
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Import generated functions
-from src.dynamics import compute_D, compute_B, compute_C, compute_G
+from pyrobo.dynamics import compute_D, compute_B, compute_C, compute_G
 
 # Import backup functions (manually)
-sys.path.insert(0, str(Path(__file__).parent.parent / "src" / "dynamics" / "backup"))
+sys.path.insert(0, str(Path(__file__).parent.parent / "src" / "pyrobo" / "dynamics" / "backup"))
 
 
 def load_backup_functions():
     """Load the original backed-up functions."""
     import importlib.util
-    
-    backup_dir = Path(__file__).parent.parent / "src" / "dynamics" / "backup"
-    
+    from importlib.machinery import SourceFileLoader
+
+    backup_dir = Path(__file__).parent.parent / "src" / "pyrobo" / "dynamics" / "backup"
+
+    def load_module(name, filepath):
+        loader = SourceFileLoader(name, str(filepath))
+        spec = importlib.util.spec_from_loader(name, loader)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module
+
     # Load mass_matrix backup
-    spec = importlib.util.spec_from_file_location("mass_matrix_backup", 
-                                                   backup_dir / "mass_matrix.py.backup")
-    mass_module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mass_module)
-    
+    mass_module = load_module("mass_matrix_backup", backup_dir / "mass_matrix.py.backup")
+
     # Load coriolis_matrix backup
-    spec = importlib.util.spec_from_file_location("coriolis_matrix_backup",
-                                                   backup_dir / "coriolis_matrix.py.backup")
-    coriolis_module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(coriolis_module)
-    
+    coriolis_module = load_module("coriolis_matrix_backup", backup_dir / "coriolis_matrix.py.backup")
+
     # Load centrifugal_matrix backup
-    spec = importlib.util.spec_from_file_location("centrifugal_matrix_backup",
-                                                   backup_dir / "centrifugal_matrix.py.backup")
-    centrifugal_module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(centrifugal_module)
-    
+    centrifugal_module = load_module("centrifugal_matrix_backup", backup_dir / "centrifugal_matrix.py.backup")
+
     # Load gravity_vector backup
-    spec = importlib.util.spec_from_file_location("gravity_vector_backup",
-                                                   backup_dir / "gravity_vector.py.backup")
-    gravity_module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(gravity_module)
+    gravity_module = load_module("gravity_vector_backup", backup_dir / "gravity_vector.py.backup")
     
     return (mass_module.compute_D, 
             coriolis_module.compute_B,

@@ -9,9 +9,9 @@ Run with: python -m examples.example_1_forward_kinematics
 
 import numpy as np
 import matplotlib.pyplot as plt
-from src.models import initialize_three_dof_rrr
-from src.kinematics import forward_kinematics
-from src.visualization import RobotRenderer, plot_trajectory
+from pyrobo.models import initialize_three_dof_rrr
+from pyrobo.kinematics import forward_kinematics
+from pyrobo.visualization import RobotRenderer, plot_trajectory
 
 
 def main():
